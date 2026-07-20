@@ -1,18 +1,21 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --text: #6b6357;
+  --text-h: #201c14;
+  --bg: #faf8f3;
+  --card-bg: #ffffff;
+  --border: #e1dac9;
+  --code-bg: #f4f1e6;
+  --accent: #2f6f5e;
+  --accent-bg: rgba(47, 111, 94, 0.08);
+  --accent-border: rgba(47, 111, 94, 0.45);
+  --danger: #a1483b;
+  --danger-bg: rgba(161, 72, 59, 0.08);
+  --social-bg: rgba(244, 241, 230, 0.5);
   --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    rgba(32, 28, 20, 0.08) 0 10px 15px -3px, rgba(32, 28, 20, 0.04) 0 4px 6px -2px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, Georgia, serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -32,15 +35,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
+    --text: #b4ac9c;
+    --text-h: #f1ebdc;
+    --bg: #171813;
+    --card-bg: #1f2019;
+    --border: #34331f;
+    --code-bg: #201f17;
+    --accent: #7fc9ae;
+    --accent-bg: rgba(127, 201, 174, 0.12);
+    --accent-border: rgba(127, 201, 174, 0.45);
+    --danger: #d97b6c;
+    --danger-bg: rgba(217, 123, 108, 0.12);
+    --social-bg: rgba(52, 51, 31, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
@@ -55,10 +61,9 @@ body {
 }
 
 #root {
-  width: 1126px;
+  width: 880px;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
   border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;

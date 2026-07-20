@@ -1,35 +1,51 @@
 // ref: 37aa88161f
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import useAuth from '../hooks/useAuth';
+import { useEffect, useRef, useState } from 'react';
+import axiosClient from '../api/axiosClient';
 import BookForm from '../components/BookForm';
 import BookList from '../components/BookList';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-
 export default function BookLibrary() {
-  const { token } = useAuth();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const loadBooks = async () => {
+  const isFirstRender = useRef(true);
+  const hasLoadedOnce = useRef(false);
+
+  const loadBooks = async (search = '') => {
     setLoading(true);
     setError('');
     try {
-      const rs = await axios.get(`${API_URL}/api/books`);
+      const rs = await axiosClient.get('/api/books', {
+        params: search.trim() ? { search: search.trim() } : {},
+      });
       setBooks(rs.data);
     } catch (err) {
       setError('โหลดข้อมูลหนังสือไม่สำเร็จ');
     } finally {
       setLoading(false);
+      hasLoadedOnce.current = true;
     }
   };
 
   useEffect(() => {
     loadBooks();
   }, []);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      loadBooks(searchTerm);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     if (!alertMessage) return;
@@ -39,9 +55,7 @@ export default function BookLibrary() {
 
   const hdlAddBook = async (book) => {
     try {
-      const rs = await axios.post(`${API_URL}/api/books`, book, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const rs = await axiosClient.post('/api/books', book);
       setBooks((prv) => [rs.data, ...prv]);
       setAlertMessage('เพิ่มหนังสือเรียบร้อย');
     } catch (err) {
@@ -51,9 +65,7 @@ export default function BookLibrary() {
 
   const hdlDeleteBook = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/books/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosClient.delete(`/api/books/${id}`);
       setBooks((prv) => prv.filter((b) => b.id !== id));
       setAlertMessage('ลบหนังสือเรียบร้อย');
     } catch (err) {
@@ -68,10 +80,15 @@ export default function BookLibrary() {
 
       <BookForm onAddBook={hdlAddBook} loading={loading} />
 
-      {loading ? (
+      {!hasLoadedOnce.current && loading ? (
         <p>กำลังโหลด...</p>
       ) : (
-        <BookList books={books} onDeleteBook={hdlDeleteBook} />
+        <BookList
+          books={books}
+          onDeleteBook={hdlDeleteBook}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
       )}
     </div>
   );

@@ -2,9 +2,23 @@
 const db = require("../db/database");
 const createError = require("../utils/createError");
 
+const searchBooksByKeyword = (keyword) => {
+    const pattern = `%${keyword}%`;
+    return db
+        .prepare('SELECT * FROM books WHERE title LIKE ? OR author LIKE ? ORDER BY created_at DESC')
+        .all(pattern, pattern);
+};
+
+const getAllBooks = () => {
+    return db.prepare('SELECT * FROM books ORDER BY created_at DESC').all();
+};
+
 exports.getBooksLanding = async (req, res, next) => {
     try {
-        const books = db.prepare('SELECT * FROM books ORDER BY created_at DESC').all();
+        const { search } = req.query;
+        const keyword = search?.trim();
+
+        const books = keyword ? searchBooksByKeyword(keyword) : getAllBooks();
         res.json(books);
     } catch (err) {
         next(err);

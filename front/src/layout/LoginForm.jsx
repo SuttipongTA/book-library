@@ -1,10 +1,8 @@
 // ref: 37aa88161f
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosClient from '../api/axiosClient';
 import useAuth from '../hooks/useAuth';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -25,7 +23,7 @@ export default function LoginForm() {
     setError('');
 
     try {
-      const rs = await axios.post(`${API_URL}/api/login`, input);
+      const rs = await axiosClient.post('/api/login', input);
       login(rs.data.token);
       navigate('/');
     } catch (err) {

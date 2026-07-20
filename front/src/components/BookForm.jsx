@@ -22,6 +22,7 @@ export default function BookForm({ onAddBook, loading }) {
 
   return (
     <form onSubmit={handleSubmit} className="book-form">
+      <div className="book-form">
       <h2>เพิ่มหนังสือใหม่</h2>
 
       <input
@@ -47,6 +48,7 @@ export default function BookForm({ onAddBook, loading }) {
       <button type="submit" disabled={loading}>
         {loading ? 'กำลังบันทึก...' : 'บันทึกหนังสือ'}
       </button>
+      </div>
     </form>
   );
 }

@@ -1,7 +1,7 @@
 // ref: 37aa88161f
 import { useMemo, useState } from 'react';
 
-export default function BookList({ books, onDeleteBook }) {
+export default function BookList({ books, onDeleteBook, searchTerm, onSearchChange }) {
   const [categoryFilter, setCategoryFilter] = useState('all');
 
   const filteredBooks = useMemo(() => {
@@ -20,6 +20,13 @@ export default function BookList({ books, onDeleteBook }) {
     <div className="book-list">
       <div className="book-list-header">
         <h2>รายการหนังสือ ({totalCount} เล่ม)</h2>
+        <input
+          type="text"
+          placeholder="ค้นหาชื่อหนังสือหรือผู้แต่ง..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="search-input"
+        />
         <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
           {categories.map((cat) => (
             <option key={cat} value={cat}>
@@ -29,7 +36,7 @@ export default function BookList({ books, onDeleteBook }) {
         </select>
       </div>
 
-      {filteredBooks.length === 0 && <p>ยังไม่มีหนังสือในรายการนี้</p>}
+      {filteredBooks.length === 0 && <p>ไม่พบหนังสือที่ตรงกับเงื่อนไขนี้</p>}
 
       <ul>
         {filteredBooks.map((book) => (
