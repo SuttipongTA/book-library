@@ -10,14 +10,17 @@ exports.login = async (req, res, next) => {
             return createError(400, "username and password are required");
         }
 
+        const trimmedUsername = username.trim();
+        const trimmedPassword = password.trim();
+
         const validUsername = process.env.ADMIN_USERNAME;
         const validPassword = process.env.ADMIN_PASSWORD;
 
-        if (username !== validUsername || password !== validPassword) {
+        if (trimmedUsername !== validUsername || trimmedPassword !== validPassword) {
             return createError(401, "Invalid username or password");
         }
 
-        const token = jwt.sign({username}, process.env.JWT_SECRET, {
+        const token = jwt.sign({username: trimmedUsername}, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN || '1h'
         });
 
