@@ -1,0 +1,20 @@
+meta {
+  name: Delete Book
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{base_url}}/api/books/999
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

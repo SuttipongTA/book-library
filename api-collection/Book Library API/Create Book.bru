@@ -1,0 +1,27 @@
+meta {
+  name: Create Book
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/books
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "title": "Harry Potter",
+    "author": "J.K. Rowling",
+    "category": "นิยาย"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
