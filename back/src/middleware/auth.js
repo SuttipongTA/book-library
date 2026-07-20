@@ -20,8 +20,7 @@ const authenticate = async (req, res, next) => {
 
         if(
             typeof payload !== "object" ||
-            !payload?.id ||
-            typeof payload.id !== "number"
+            !payload?.username
         ) {
             return createError(400, "Payload not in correct format");
         }
